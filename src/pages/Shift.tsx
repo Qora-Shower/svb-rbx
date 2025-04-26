@@ -1,13 +1,13 @@
-
 import NavBar from "@/components/NavBar";
 import { Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Footer from "@/components/Footer";
 
 const Shift = () => {
   return (
-    <div className="min-h-screen bg-gray-50 font-ubuntu">
+    <div className="min-h-screen bg-gray-50 font-ubuntu flex flex-col">
       <NavBar />
-      <main className="pt-20 px-4 max-w-7xl mx-auto">
+      <main className="pt-20 px-4 max-w-7xl mx-auto flex-grow">
         <div className="bg-white rounded-xl p-6 mt-8 shadow-sm">
           <h1 className="text-4xl font-bold mb-8 text-gray-900 flex items-center gap-2">
             <Clock className="h-8 w-8" />
@@ -19,34 +19,19 @@ const Shift = () => {
               <Card key={index} className="overflow-hidden">
                 <CardHeader className={`py-3 ${getStatusColor(shift.status)}`}>
                   <CardTitle className="text-white flex justify-between items-center">
-                    <span>Shift #{shift.id}</span>
                     <span>{shift.date}</span>
+                    <span>{shift.time}</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-5">
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="font-bold">Route:</span>
-                      <span>{shift.route}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
                       <span className="font-bold">Host:</span>
                       <span>{shift.host}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="font-bold">Zeit:</span>
-                      <span>{shift.time}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
                       <span className="font-bold">Status:</span>
                       <span className={getStatusTextColor(shift.status)}>{shift.status}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-bold">Teilnehmer:</span>
-                      <span>{shift.participants}</span>
-                    </div>
-                    <div className="mt-4 pt-3 border-t">
-                      <p className="text-gray-600">{shift.description}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -55,6 +40,7 @@ const Shift = () => {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };
@@ -83,7 +69,6 @@ const getStatusTextColor = (status) => {
 // Sample shift data
 const shifts = [
   {
-    id: "1254",
     date: "27.04.2025",
     route: "Linie 5: Hauptbahnhof - Westpark",
     host: "MaxBusFahrer",
@@ -93,7 +78,6 @@ const shifts = [
     description: "Regulärer Wochenenddienst auf der Hauptlinie. Neue Fahrer sind willkommen, Erfahrene bitte im Chat melden."
   },
   {
-    id: "1255",
     date: "27.04.2025",
     route: "Linie 8: Ostbahnhof - Universität",
     host: "BusProfi99",
@@ -103,7 +87,6 @@ const shifts = [
     description: "Nachmittagsschicht durch das Universitätsviertel. Moderate Verkehrsdichte erwartet."
   },
   {
-    id: "1256",
     date: "28.04.2025",
     route: "Express X1: Flughafen - Zentrum",
     host: "SpeedDrive",
@@ -113,7 +96,6 @@ const shifts = [
     description: "Expressdienst in der Hauptverkehrszeit. Nur für erfahrene Fahrer mit mindestens Level 15."
   },
   {
-    id: "1257",
     date: "28.04.2025",
     route: "Nachtlinie N3: Rundkurs Innenstadt",
     host: "NachtFahrer",
@@ -123,7 +105,6 @@ const shifts = [
     description: "Spezielle Nachtroute. Reduzierte Geschwindigkeit und erhöhte Aufmerksamkeit erforderlich."
   },
   {
-    id: "1258",
     date: "29.04.2025",
     route: "Linie 12: Nordstadt - Südpark",
     host: "BusKönig",
@@ -133,7 +114,6 @@ const shifts = [
     description: "Entspannte Mittagsschicht durch die Wohngebiete. Ideal für neue Fahrer zum Üben."
   },
   {
-    id: "1259",
     date: "29.04.2025",
     route: "Schulbus S5: Verschiedene Schulen",
     host: "SchulbusFan",

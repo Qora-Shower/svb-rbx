@@ -1,12 +1,14 @@
 
 import { useState } from 'react';
-import { Menu, Home, Newspaper, GalleryHorizontal, LogIn, Clock, Shield, FileText, Calendar, Bus, TrainFront } from 'lucide-react';
+import { Menu, Home, Newspaper, GalleryHorizontal, LogIn, Clock, Shield, FileText, Calendar } from 'lucide-react';
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   const menuItems = [
     { name: 'Home', href: '/', icon: Home },
@@ -48,12 +50,26 @@ const NavBar = () => {
             </Sheet>
             <Link to="/" className="text-black font-bold text-xl">SVB & MBU Roblox</Link>
           </div>
-          <Link to="/login">
-            <Button variant="outline" className="flex items-center gap-2 hover:bg-[#33C3F0] hover:text-white border-[#33C3F0]">
-              <LogIn className="h-5 w-5" />
-              Login
-            </Button>
-          </Link>
+          {user ? (
+            <div className="flex items-center gap-2">
+              <span className="text-black font-medium">{user.username}</span>
+              <Button 
+                variant="outline" 
+                className="flex items-center gap-2 hover:bg-[#33C3F0] hover:text-white border-[#33C3F0]"
+                onClick={logout}
+              >
+                <LogIn className="h-5 w-5 rotate-180" />
+                Logout
+              </Button>
+            </div>
+          ) : (
+            <Link to="/login">
+              <Button variant="outline" className="flex items-center gap-2 hover:bg-[#33C3F0] hover:text-white border-[#33C3F0]">
+                <LogIn className="h-5 w-5" />
+                Login
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </nav>

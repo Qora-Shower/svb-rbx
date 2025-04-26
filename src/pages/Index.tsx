@@ -1,14 +1,15 @@
 
 import { Link } from "react-router-dom";
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 import { Calendar, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gray-50 font-ubuntu">
+    <div className="min-h-screen bg-gray-50 font-ubuntu flex flex-col">
       <NavBar />
-      <main className="pt-20 px-4 max-w-7xl mx-auto">
+      <main className="pt-20 px-4 max-w-7xl mx-auto flex-grow">
         <div className="bg-white rounded-xl p-6 mt-8 shadow-sm">
           <h1 className="text-4xl font-bold mb-8 text-gray-900">Willkommen bei SVB & MBU Roblox</h1>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -29,6 +30,7 @@ const Index = () => {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };
