@@ -8,7 +8,7 @@ interface User {
 
 // User database
 const userDatabase = [
-  { username: "Equinoobie", password: "1234" },
+  { username: "Equinoobie", password: "S0ul" },
   { username: "MaxBusFahrer", password: "password1" },
   { username: "BusProfi99", password: "busdriver" },
   { username: "HiIamSteve", password: "steve123" },
