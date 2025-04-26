@@ -76,7 +76,7 @@ const Login = () => {
               <LogIn className="h-7 w-7" />
               Login
             </h1>
-            <p className="text-gray-600">Melde dich mit deinem SVB & MBU Roblox Account an</p>
+            <p className="text-gray-600">Melde dich mit deinem SVB & MBU Roblox Admin Account an</p>
           </div>
           
           {loginAttempts >= 6 && (
