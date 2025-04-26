@@ -128,7 +128,7 @@ const getScheduleTitle = (status) => {
   }
 };
 
-const weekdays = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
+const weekdays = ["MO - FR", "Samstag", "Sonntag"];
 
 const getScheduleForDay = (day, status) => {
   // Return different schedules based on day and status
@@ -171,7 +171,7 @@ const routes = [
     name: "Bus 101",
     type: "bus",
     route: "Hauptbahnhof → Marktplatz → Universität",
-    status: "Normal",
+    status: "Baustelle",
     // ... other details
   },
   {
@@ -195,10 +195,10 @@ const routes = [
 
 // Fallback route if ID is not found
 const fallbackRoute = {
-  id: "not-found",
-  name: "Route nicht gefunden",
-  type: "bus",
-  status: "Normal",
+  id: "train-1",
+  name: "S1",
+  type: "train",
+  status: "Baustelle",
   // ... other details
 };
 
