@@ -1,14 +1,29 @@
 
 import NavBar from "@/components/NavBar";
+import { Calendar, Discord, Users } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1EAEDB] to-[#33C3F0] font-ubuntu">
+    <div className="min-h-screen bg-gray-50 font-ubuntu">
       <NavBar />
       <main className="pt-20 px-4 max-w-7xl mx-auto">
-        <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 mt-8 text-white">
-          <h1 className="text-4xl font-bold mb-4">Willkommen bei SVB Bus Shift</h1>
-          <p className="text-xl">Wähle eine Option aus dem Menü, um zu beginnen!</p>
+        <div className="bg-white rounded-xl p-6 mt-8 shadow-sm">
+          <h1 className="text-4xl font-bold mb-8 text-gray-900">Willkommen bei SVB & MBU Roblox</h1>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button className="flex items-center gap-2 hover:bg-[#F97316] border-[#33C3F0]" variant="outline">
+              <Calendar className="h-5 w-5" />
+              Timetable
+            </Button>
+            <Button className="flex items-center gap-2 hover:bg-[#F97316] border-[#33C3F0]" variant="outline">
+              <Users className="h-5 w-5" />
+              Join Group
+            </Button>
+            <Button className="flex items-center gap-2 hover:bg-[#F97316] border-[#33C3F0]" variant="outline">
+              <Discord className="h-5 w-5" />
+              Join Discord
+            </Button>
+          </div>
         </div>
       </main>
     </div>
