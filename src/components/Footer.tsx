@@ -12,7 +12,7 @@ const Footer = () => {
           </div>
           <div className="flex space-x-6">
             <Link to="/tos" className="text-gray-600 hover:text-[#33C3F0]">
-              AGB
+            AGB |
             </Link>
             <Link to="/privacy" className="text-gray-600 hover:text-[#33C3F0]">
               Datenschutz
@@ -23,7 +23,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Discord
+            | Discord
             </a>
           </div>
         </div>
