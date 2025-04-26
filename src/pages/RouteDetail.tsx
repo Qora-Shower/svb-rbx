@@ -215,7 +215,7 @@ const routes = [
   },
   {
     id: "train-1",
-    name: "S1",
+    name: "RE1",
     type: "train",
     route: "Verona → Merano → Milan",
     stations: 15,
