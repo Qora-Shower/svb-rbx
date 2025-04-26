@@ -1,6 +1,6 @@
 
 import NavBar from "@/components/NavBar";
-import { Calendar, Discord, Users } from "lucide-react";
+import { Calendar, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
@@ -20,7 +20,7 @@ const Index = () => {
               Join Group
             </Button>
             <Button className="flex items-center gap-2 hover:bg-[#F97316] border-[#33C3F0]" variant="outline">
-              <Discord className="h-5 w-5" />
+              <Users className="h-5 w-5" />
               Join Discord
             </Button>
           </div>

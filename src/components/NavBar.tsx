@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Menu, Home, News, Blog, Gallery, LogIn } from 'lucide-react';
+import { Menu, Home, Newspaper, GalleryHorizontal, LogIn } from 'lucide-react';
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 
@@ -9,9 +9,9 @@ const NavBar = () => {
 
   const menuItems = [
     { name: 'Home', href: '#', icon: Home },
-    { name: 'News', href: '#news', icon: News },
-    { name: 'Blog', href: '#blog', icon: Blog },
-    { name: 'Galerie', href: '#gallery', icon: Gallery },
+    { name: 'News', href: '#news', icon: Newspaper },
+    { name: 'Blog', href: '#blog', icon: Newspaper },
+    { name: 'Galerie', href: '#gallery', icon: GalleryHorizontal },
   ];
 
   return (
