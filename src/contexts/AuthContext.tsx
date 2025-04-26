@@ -9,10 +9,7 @@ interface User {
 // User database
 const userDatabase = [
   { username: "Equinoobie", password: "S0ul" },
-  { username: "Jolicraft", password: "Test" },
-  { username: "BusProfi99", password: "busdriver" },
-  { username: "HiIamSteve", password: "steve123" },
-  { username: "NachtFahrer", password: "nacht2025" }
+  { username: "Jolicraft", password: "Test" }
 ];
 
 interface AuthContextType {
