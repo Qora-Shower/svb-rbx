@@ -17,25 +17,48 @@ const userDatabase = [
 
 interface AuthContextType {
   user: User | null;
-  login: (username: string, password: string) => boolean;
+  login: (username: string, password: string) => { success: boolean; timeoutMinutes?: number };
   logout: () => void;
+  loginAttempts: number;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loginAttempts, setLoginAttempts] = useState(0);
+  const [lastLoginTime, setLastLoginTime] = useState<number>(0);
 
   useEffect(() => {
-    // Check for saved user in localStorage
     const savedUser = localStorage.getItem("currentUser");
     if (savedUser) {
       setUser(JSON.parse(savedUser));
     }
   }, []);
 
-  const login = (username: string, password: string): boolean => {
-    // Find user in database
+  const getTimeoutMinutes = (attempts: number) => {
+    const totalCycles = Math.floor(attempts / 3);
+    if (totalCycles === 0) return 0;
+    if (attempts % 3 === 0) {
+      return (totalCycles <= 2) ? totalCycles : 3;
+    }
+    return 0;
+  };
+
+  const login = (username: string, password: string) => {
+    const now = Date.now();
+    const timeoutMinutes = getTimeoutMinutes(loginAttempts);
+    
+    if (timeoutMinutes > 0) {
+      const timeSinceLastAttempt = (now - lastLoginTime) / (1000 * 60);
+      if (timeSinceLastAttempt < timeoutMinutes) {
+        return { 
+          success: false, 
+          timeoutMinutes: timeoutMinutes 
+        };
+      }
+    }
+
     const foundUser = userDatabase.find(
       (user) => user.username === username && user.password === password
     );
@@ -44,10 +67,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const loggedInUser = { username: foundUser.username };
       setUser(loggedInUser);
       localStorage.setItem("currentUser", JSON.stringify(loggedInUser));
-      return true;
+      setLoginAttempts(0);
+      return { success: true };
+    } else {
+      const newAttempts = loginAttempts + 1;
+      setLoginAttempts(newAttempts);
+      setLastLoginTime(now);
+      return { 
+        success: false, 
+        timeoutMinutes: getTimeoutMinutes(newAttempts) 
+      };
     }
-    
-    return false;
   };
 
   const logout = () => {
@@ -56,7 +86,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loginAttempts }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,25 +7,51 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
+  const [timeoutEnd, setTimeoutEnd] = useState<Date | null>(null);
+  const { login, loginAttempts } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (timeoutEnd && new Date() >= timeoutEnd) {
+        setTimeoutEnd(null);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timeoutEnd]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    const success = login(username, password);
+    if (timeoutEnd && new Date() < timeoutEnd) {
+      return;
+    }
+
+    const result = login(username, password);
     
-    if (success) {
+    if (result.success) {
       toast({
         title: "Erfolgreich eingeloggt",
         description: `Willkommen zurück, ${username}!`,
       });
       navigate("/");
+    } else if (result.timeoutMinutes) {
+      const endTime = new Date();
+      endTime.setMinutes(endTime.getMinutes() + result.timeoutMinutes);
+      setTimeoutEnd(endTime);
+      
+      toast({
+        title: "Zu viele Versuche",
+        description: `Bitte warten Sie ${result.timeoutMinutes} Minute${result.timeoutMinutes > 1 ? 'n' : ''}.`,
+        variant: "destructive",
+      });
     } else {
       toast({
         title: "Login fehlgeschlagen",
@@ -53,6 +78,29 @@ const Login = () => {
             </h1>
             <p className="text-gray-600">Melde dich mit deinem SVB & MBU Roblox Account an</p>
           </div>
+          
+          {loginAttempts >= 6 && (
+            <Alert variant="destructive" className="mb-6 animate-fade-in">
+              <AlertDescription className="flex flex-col gap-2">
+                <span>Zu viele fehlgeschlagene Anmeldeversuche.</span>
+                <Button 
+                  variant="outline" 
+                  className="w-full border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors"
+                  onClick={handleRedirect}
+                >
+                  Passwort zurücksetzen
+                </Button>
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {timeoutEnd && (
+            <Alert variant="destructive" className="mb-6 animate-fade-in">
+              <AlertDescription>
+                Login gesperrt für {Math.ceil((timeoutEnd.getTime() - new Date().getTime()) / 1000)} Sekunden
+              </AlertDescription>
+            </Alert>
+          )}
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
@@ -92,7 +140,11 @@ const Login = () => {
               />
             </div>
             
-            <Button type="submit" className="w-full hover:bg-[#33C3F0]">
+            <Button 
+              type="submit" 
+              className="w-full hover:bg-[#33C3F0]"
+              disabled={!!(timeoutEnd && new Date() < timeoutEnd)}
+            >
               Anmelden
             </Button>
           </form>
