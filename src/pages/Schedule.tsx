@@ -190,15 +190,22 @@ const routes = [
     status: "Gesperrt",
     // ... other details
   },
+  {
+    id: "train-1",
+    name: "Zug RE1",
+    type: "train",
+    route: "Hauptbahnhof → Weststadt → Vorort Nord",
+    status: "Normal"
+  },
   // ... other routes
 ];
 
 // Fallback route if ID is not found
 const fallbackRoute = {
-  id: "train-1",
-  name: "S1",
-  type: "train",
-  status: "Baustelle",
+  id: "Service not found",
+  name: "Unknown",
+  type: "---",
+  status: "---",
   // ... other details
 };
 
