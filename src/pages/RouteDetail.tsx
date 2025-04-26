@@ -213,6 +213,35 @@ const routes = [
       { name: "Westpark", time: "00:55" }
     ]
   },
+  {
+    id: "train-1",
+    name: "S1",
+    type: "train",
+    route: "Verona → Merano → Milan",
+    stations: 15,
+    duration: "55 Min.",
+    frequency: "alle 30 Min.",
+    capacity: "120 Fahrgäste",
+    status: "Baustelle",
+    notes: [
+      "Aufgrund von Bauarbeiten Umleitung zwischen Merano und Milan",
+      "Haltestelle 'Merano westbahnhof' wird vorübergehend nicht bedient",
+      "Mit Verspätungen von 20-40 Minuten ist zu rechnen"
+    ],
+    stations_list: [
+      { name: "Verona", time: "Start" },
+      { name: "Venedic", time: "+5 min" },
+      { name: "Airport City", time: "+5 min" },
+      { name: "Gewerbegebiet Ost", time: "+5 min" },
+      { name: "Stadtgrenze", time: "+5 min" },
+      { name: "Technologiepark", time: "+5 min" },
+      { name: "Zentrum", time: "+5 min" },
+      { name: "Hauptstraße", time: "+5 min" },
+      { name: "Bahnhofstraße", time: "+5 min" },
+      { name: "Parkstraße", time: "+5 min" },
+      { name: "Westpark", time: "End" }
+    ]
+  },
   // Other routes... (truncated for brevity)
 ];
 
