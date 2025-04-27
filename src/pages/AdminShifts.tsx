@@ -28,7 +28,7 @@ import { toast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Import our ShiftContext
-import { useShiftContext } from "@/contexts/ShiftContext";
+import { useShiftContext, ShiftItem } from "@/contexts/ShiftContext";
 
 const AdminShifts = () => {
   const { user, userDatabase } = useAuth();
@@ -65,13 +65,13 @@ const AdminShifts = () => {
       return;
     }
     
-    // Create the shift
-    const shiftItem = {
+    // Create the shift with explicit status typing
+    const shiftItem: ShiftItem = {
       id: Date.now().toString(),
       host: user.username,
       date: format(date, "dd.MM.yyyy"),
       time: `${startTime} - ${endTime}`,
-      status: "Aktiv",
+      status: "Aktiv", // Now explicitly set as one of the allowed values
       maxParticipants: parseInt(maxParticipants),
       description,
       assignmentType,
