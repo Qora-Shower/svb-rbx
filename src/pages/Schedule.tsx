@@ -1,11 +1,15 @@
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 import { ArrowLeft, Calendar, Bus, TrainFront } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Schedule = () => {
   const { id } = useParams();
+  const [activeTab, setActiveTab] = useState("mo-fr");
   
   // Find the route based on the ID from URL
   const route = routes.find(r => r.id === id) || fallbackRoute;
@@ -17,7 +21,7 @@ const Schedule = () => {
     <div className="min-h-screen bg-gray-50 font-ubuntu">
       <NavBar />
       <main className="pt-20 px-4 max-w-7xl mx-auto">
-        <div className="bg-white rounded-xl p-6 mt-8 shadow-sm">
+        <div className="bg-white rounded-xl p-6 mt-8 shadow-sm mb-8">
           <div className="mb-6">
             <Link to={`/timetable/${id}`}>
               <Button variant="ghost" className="flex items-center gap-2">
@@ -62,49 +66,132 @@ const Schedule = () => {
                 </div>
               </div>
             ) : (
-              <div className="border rounded-lg overflow-hidden">
-                <div className="grid grid-cols-7 gap-0 border-b">
-                  {weekdays.map((day) => (
-                    <div key={day} className="p-3 font-bold text-center border-r last:border-r-0">
-                      {day}
+              <div className="space-y-6">
+                <Tabs defaultValue="mo-fr" value={activeTab} onValueChange={setActiveTab} className="w-full">
+                  <TabsList className="grid grid-cols-4 mb-6">
+                    <TabsTrigger value="mo-fr">MO - FR</TabsTrigger>
+                    <TabsTrigger value="samstag">Samstag</TabsTrigger>
+                    <TabsTrigger value="sonntag">Sonntag</TabsTrigger>
+                    <TabsTrigger value="feiertag">Feiertag</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="mo-fr" className="border rounded-lg">
+                    <div className="p-4 bg-blue-50">
+                      <h3 className="font-bold">Montag bis Freitag</h3>
                     </div>
-                  ))}
-                </div>
-                
-                <ScrollArea className="h-[500px]">
-                  <div className="grid grid-cols-7 gap-0">
-                    {weekdays.map((day) => (
-                      <div key={day} className="border-r last:border-r-0">
-                        {getScheduleForDay(day, scheduleStatus).map((time, index) => (
-                          <div 
-                            key={index} 
-                            className={`p-3 text-center border-b last:border-b-0 ${
-                              scheduleStatus === 'Baustelle' && index % 5 === 0 ? 'bg-orange-50' : ''
-                            }`}
-                          >
-                            {time}
-                          </div>
-                        ))}
+                    <ScrollArea className="h-[400px]">
+                      <div className="p-4 space-y-4">
+                        <div className="border-b pb-4">
+                          <h4 className="font-semibold text-lg mb-2">04:00 - 06:00</h4>
+                          <p>Alle 20 Minuten: 04:00, 04:20, 04:40, 05:00, 05:20, 05:40</p>
+                        </div>
+                        <div className="border-b pb-4">
+                          <h4 className="font-semibold text-lg mb-2">06:00 - 09:00 (Hauptverkehrszeit)</h4>
+                          <p>Alle 10 Minuten: 06:00, 06:10, 06:20, 06:30... bis 09:00</p>
+                        </div>
+                        <div className="border-b pb-4">
+                          <h4 className="font-semibold text-lg mb-2">09:00 - 15:00</h4>
+                          <p>Alle 15 Minuten: 09:00, 09:15, 09:30, 09:45... bis 15:00</p>
+                        </div>
+                        <div className="border-b pb-4">
+                          <h4 className="font-semibold text-lg mb-2">15:00 - 19:00 (Hauptverkehrszeit)</h4>
+                          <p>Alle 10 Minuten: 15:00, 15:10, 15:20, 15:30... bis 19:00</p>
+                        </div>
+                        <div className="border-b pb-4">
+                          <h4 className="font-semibold text-lg mb-2">19:00 - 22:00</h4>
+                          <p>Alle 15 Minuten: 19:00, 19:15, 19:30, 19:45... bis 22:00</p>
+                        </div>
+                        <div className="pb-4">
+                          <h4 className="font-semibold text-lg mb-2">22:00 - 00:00</h4>
+                          <p>Alle 30 Minuten: 22:00, 22:30, 23:00, 23:30</p>
+                        </div>
                       </div>
-                    ))}
+                    </ScrollArea>
+                  </TabsContent>
+                  
+                  <TabsContent value="samstag" className="border rounded-lg">
+                    <div className="p-4 bg-blue-50">
+                      <h3 className="font-bold">Samstag</h3>
+                    </div>
+                    <ScrollArea className="h-[400px]">
+                      <div className="p-4 space-y-4">
+                        <div className="border-b pb-4">
+                          <h4 className="font-semibold text-lg mb-2">06:00 - 09:00</h4>
+                          <p>Alle 20 Minuten: 06:00, 06:20, 06:40, 07:00... bis 09:00</p>
+                        </div>
+                        <div className="border-b pb-4">
+                          <h4 className="font-semibold text-lg mb-2">09:00 - 18:00</h4>
+                          <p>Alle 15 Minuten: 09:00, 09:15, 09:30, 09:45... bis 18:00</p>
+                        </div>
+                        <div className="pb-4">
+                          <h4 className="font-semibold text-lg mb-2">18:00 - 23:00</h4>
+                          <p>Alle 20 Minuten: 18:00, 18:20, 18:40, 19:00... bis 23:00</p>
+                        </div>
+                      </div>
+                    </ScrollArea>
+                  </TabsContent>
+                  
+                  <TabsContent value="sonntag" className="border rounded-lg">
+                    <div className="p-4 bg-blue-50">
+                      <h3 className="font-bold">Sonntag</h3>
+                    </div>
+                    <ScrollArea className="h-[400px]">
+                      <div className="p-4 space-y-4">
+                        <div className="border-b pb-4">
+                          <h4 className="font-semibold text-lg mb-2">07:00 - 12:00</h4>
+                          <p>Alle 30 Minuten: 07:00, 07:30, 08:00... bis 12:00</p>
+                        </div>
+                        <div className="border-b pb-4">
+                          <h4 className="font-semibold text-lg mb-2">12:00 - 19:00</h4>
+                          <p>Alle 20 Minuten: 12:00, 12:20, 12:40, 13:00... bis 19:00</p>
+                        </div>
+                        <div className="pb-4">
+                          <h4 className="font-semibold text-lg mb-2">19:00 - 22:00</h4>
+                          <p>Alle 30 Minuten: 19:00, 19:30, 20:00... bis 22:00</p>
+                        </div>
+                      </div>
+                    </ScrollArea>
+                  </TabsContent>
+                  
+                  <TabsContent value="feiertag" className="border rounded-lg">
+                    <div className="p-4 bg-blue-50">
+                      <h3 className="font-bold">Feiertag/Ferien</h3>
+                    </div>
+                    <ScrollArea className="h-[400px]">
+                      <div className="p-4 space-y-4">
+                        <div className="border-b pb-4">
+                          <h4 className="font-semibold text-lg mb-2">07:00 - 12:00</h4>
+                          <p>Alle 30 Minuten: 07:00, 07:30, 08:00... bis 12:00</p>
+                        </div>
+                        <div className="border-b pb-4">
+                          <h4 className="font-semibold text-lg mb-2">12:00 - 19:00</h4>
+                          <p>Alle 20 Minuten: 12:00, 12:20, 12:40, 13:00... bis 19:00</p>
+                        </div>
+                        <div className="pb-4">
+                          <h4 className="font-semibold text-lg mb-2">19:00 - 21:00</h4>
+                          <p>Alle 30 Minuten: 19:00, 19:30, 20:00, 20:30, 21:00</p>
+                        </div>
+                      </div>
+                    </ScrollArea>
+                  </TabsContent>
+                </Tabs>
+                
+                {scheduleStatus === 'Baustelle' && (
+                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                    <h3 className="text-lg font-semibold text-orange-700 mb-2">Hinweis zu Bauarbeiten</h3>
+                    <p className="text-orange-600">
+                      Aufgrund von Bauarbeiten kann es zu Verspätungen von 5-10 Minuten kommen.
+                      Einige Abfahrten können entfallen.
+                      Wir bitten um Ihr Verständnis.
+                    </p>
                   </div>
-                </ScrollArea>
-              </div>
-            )}
-            
-            {scheduleStatus === 'Baustelle' && (
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-orange-700 mb-2">Hinweis zu Bauarbeiten</h3>
-                <p className="text-orange-600">
-                  Aufgrund von Bauarbeiten kann es zu Verspätungen von 5-10 Minuten kommen.
-                  Die mit orangem Hintergrund markierten Abfahrten können entfallen.
-                  Wir bitten um Ihr Verständnis.
-                </p>
+                )}
               </div>
             )}
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };
@@ -128,42 +215,6 @@ const getScheduleTitle = (status) => {
   }
 };
 
-const weekdays = ["MO - FR", "Samstag", "Sonntag"];
-
-const getScheduleForDay = (day, status) => {
-  // Return different schedules based on day and status
-  const isWeekend = day === "Samstag" || day === "Sonntag";
-  
-  if (isWeekend) {
-    // Weekend schedule has fewer departures
-    const times = [];
-    for (let hour = 7; hour <= 22; hour++) {
-      if (status === 'Baustelle' && hour > 20) continue; // Reduced service on construction days
-      times.push(`${hour}:00`);
-      times.push(`${hour}:30`);
-    }
-    return times;
-  } else {
-    // Weekday schedule
-    const times = [];
-    for (let hour = 5; hour <= 23; hour++) {
-      if (status === 'Baustelle' && (hour < 6 || hour > 22)) continue; // Reduced service on construction days
-      
-      times.push(`${hour}:00`);
-      if (hour >= 7 && hour <= 19) {
-        // More frequent during peak hours
-        times.push(`${hour}:15`);
-        times.push(`${hour}:30`);
-        times.push(`${hour}:45`);
-      } else {
-        // Less frequent during off-peak
-        times.push(`${hour}:30`);
-      }
-    }
-    return times;
-  }
-};
-
 // Sample routes data (same as in RouteDetail)
 const routes = [
   {
@@ -171,7 +222,7 @@ const routes = [
     name: "Bus 101",
     type: "bus",
     route: "Hauptbahnhof → Marktplatz → Universität",
-    status: "Baustelle",
+    status: "Normal",
     // ... other details
   },
   {
@@ -197,16 +248,16 @@ const routes = [
     route: "Hauptbahnhof → Weststadt → Vorort Nord",
     status: "Normal"
   },
-  // ... other routes
+  // Add all routes from RouteDetail here
 ];
 
 // Fallback route if ID is not found
 const fallbackRoute = {
-  id: "Service not found",
-  name: "Unknown",
-  type: "---",
-  status: "---",
-  // ... other details
+  id: "not-found",
+  name: "Route nicht gefunden",
+  type: "bus",
+  route: "Information nicht verfügbar",
+  status: "Normal",
 };
 
 export default Schedule;

@@ -1,5 +1,7 @@
+
 import { useParams, Link } from "react-router-dom";
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 import { ArrowLeft, Calendar, Bus, TrainFront, MapPin, Clock, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -10,10 +12,10 @@ const RouteDetail = () => {
   const route = routes.find(r => r.id === id) || fallbackRoute;
 
   return (
-    <div className="min-h-screen bg-gray-50 font-ubuntu">
+    <div className="min-h-screen bg-gray-50 font-ubuntu flex flex-col">
       <NavBar />
-      <main className="pt-20 px-4 max-w-7xl mx-auto">
-        <div className="bg-white rounded-xl p-6 mt-8 shadow-sm">
+      <main className="pt-20 px-4 max-w-7xl mx-auto flex-grow">
+        <div className="bg-white rounded-xl p-6 mt-8 shadow-sm mb-8">
           <div className="mb-6">
             <Link to="/timetable">
               <Button variant="ghost" className="flex items-center gap-2">
@@ -100,6 +102,36 @@ const RouteDetail = () => {
                     </Button>
                   </Link>
                   
+                  {route.status === 'Baustelle' && (
+                    <Link to={`/timetable/${id}/schedule?variant=construction`}>
+                      <Button 
+                        className="w-full flex items-center gap-2 justify-between border-orange-500 hover:bg-orange-500 hover:text-white mt-2"
+                        variant="outline"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Calendar className="h-5 w-5" />
+                          <span>Baustellenfahrplan</span>
+                        </div>
+                        <ArrowLeft className="h-5 w-5 rotate-180" />
+                      </Button>
+                    </Link>
+                  )}
+                  
+                  {route.status === 'Gesperrt' && (
+                    <Link to={`/timetable/${id}/schedule?variant=alternative`}>
+                      <Button 
+                        className="w-full flex items-center gap-2 justify-between border-red-500 hover:bg-red-500 hover:text-white mt-2"
+                        variant="outline"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Calendar className="h-5 w-5" />
+                          <span>Alternative Routen</span>
+                        </div>
+                        <ArrowLeft className="h-5 w-5 rotate-180" />
+                      </Button>
+                    </Link>
+                  )}
+                  
                   <div>
                     <p className="text-sm text-gray-600">
                       {route.status === 'Normal' && "Regulärer Fahrplan ohne besondere Einschränkungen."}
@@ -113,7 +145,7 @@ const RouteDetail = () => {
               <div className="bg-gray-50 p-4 rounded-lg border">
                 <h2 className="text-xl font-semibold mb-3">Hinweise</h2>
                 <ul className="list-disc pl-5 text-sm text-gray-600 space-y-1">
-                  {route.notes.map((note, index) => (
+                  {route.notes && route.notes.map((note, index) => (
                     <li key={index}>{note}</li>
                   ))}
                 </ul>
@@ -122,6 +154,7 @@ const RouteDetail = () => {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };
@@ -148,7 +181,7 @@ const getScheduleButtonClass = (status) => {
 const getScheduleText = (status) => {
   switch(status) {
     case 'Normal': return 'Fahrplan';
-    case 'Baustelle': return 'Baustellenfahrplan';
+    case 'Baustelle': return 'Fahrplan';
     case 'Gesperrt': return 'Geänderte Linie';
     default: return 'Fahrplan';
   }
@@ -242,7 +275,163 @@ const routes = [
       { name: "Westpark", time: "End" }
     ]
   },
-  // Other routes... (truncated for brevity)
+  {
+    id: "bus-3",
+    name: "Bus 303",
+    type: "bus",
+    route: "Nordstadt → Einkaufszentrum → Südpark",
+    stations: 18,
+    duration: "60 Min.",
+    frequency: "alle 15 Min.",
+    capacity: "85 Fahrgäste",
+    status: "Normal",
+    notes: [
+      "Barrierefrei zugänglich", 
+      "Fahrradmitnahme möglich", 
+      "Kein WLAN verfügbar"
+    ],
+    stations_list: [
+      { name: "Nordstadt Terminal", time: "00:00" },
+      { name: "Nordbahnhof", time: "00:05" },
+      { name: "Industriegebiet Nord", time: "00:10" },
+      { name: "Wohnsiedlung A", time: "00:15" },
+      { name: "Wohnsiedlung B", time: "00:20" },
+      { name: "Einkaufszentrum Nord", time: "00:25" },
+      { name: "Stadtmitte", time: "00:35" },
+      { name: "Einkaufszentrum Süd", time: "00:45" },
+      { name: "Südpark", time: "00:60" }
+    ]
+  },
+  {
+    id: "bus-4",
+    name: "Bus 404",
+    type: "bus",
+    route: "Ostbahnhof → Krankenhaus → Sportzentrum",
+    stations: 10,
+    duration: "35 Min.",
+    frequency: "alle 20 Min.",
+    capacity: "75 Fahrgäste",
+    status: "Gesperrt",
+    notes: [
+      "Diese Linie ist aufgrund umfangreicher Straßenbauarbeiten gesperrt",
+      "Bitte nutzen Sie die Alternativlinien 303 oder 505",
+      "Voraussichtliche Wiederinbetriebnahme: 15.06.2025"
+    ],
+    stations_list: [
+      { name: "Ostbahnhof", time: "00:00" },
+      { name: "Ostmarkt", time: "00:05" },
+      { name: "Schulzentrum Ost", time: "00:10" },
+      { name: "Krankenhaus Haupteingang", time: "00:15" },
+      { name: "Krankenhaus Südflügel", time: "00:18" },
+      { name: "Wohngebiet Ost", time: "00:23" },
+      { name: "Parkplatz Sportzentrum", time: "00:28" },
+      { name: "Sportzentrum", time: "00:35" }
+    ]
+  },
+  {
+    id: "train-2",
+    name: "RE2",
+    type: "train",
+    route: "Hauptbahnhof → Oststadt → Industriegebiet",
+    stations: 7,
+    duration: "28 Min.",
+    frequency: "alle 30 Min.",
+    capacity: "150 Fahrgäste",
+    status: "Baustelle",
+    notes: [
+      "Aufgrund von Gleisbauarbeiten reduzierte Geschwindigkeit",
+      "Mit Verspätungen von 5-10 Minuten ist zu rechnen",
+      "Keine Fahrradmitnahme möglich während der Bauarbeiten"
+    ],
+    stations_list: [
+      { name: "Hauptbahnhof", time: "00:00" },
+      { name: "Messegelände", time: "00:05" },
+      { name: "Oststadt", time: "00:12" },
+      { name: "Technologiepark", time: "00:18" },
+      { name: "Gewerbegebiet", time: "00:22" },
+      { name: "Industriepark", time: "00:28" }
+    ]
+  },
+  {
+    id: "train-3",
+    name: "S1",
+    type: "train",
+    route: "Hauptbahnhof → Zentrum → Flughafen",
+    stations: 10,
+    duration: "40 Min.",
+    frequency: "alle 20 Min.",
+    capacity: "180 Fahrgäste",
+    status: "Normal",
+    notes: [
+      "Express-Service zum Flughafen",
+      "WLAN im gesamten Zug verfügbar",
+      "Barrierefrei zugänglich"
+    ],
+    stations_list: [
+      { name: "Hauptbahnhof", time: "00:00" },
+      { name: "Zentrum", time: "00:08" },
+      { name: "Messegelände", time: "00:15" },
+      { name: "Stadtgrenze", time: "00:22" },
+      { name: "Gewerbepark", time: "00:28" },
+      { name: "Flughafen Terminal 2", time: "00:35" },
+      { name: "Flughafen Terminal 1", time: "00:40" }
+    ]
+  },
+  {
+    id: "train-4",
+    name: "S2",
+    type: "train",
+    route: "Vorort Süd → Zentrum → Vorort Nord",
+    stations: 15,
+    duration: "50 Min.",
+    frequency: "alle 15 Min.",
+    capacity: "160 Fahrgäste",
+    status: "Normal",
+    notes: [
+      "Halt an allen Stationen",
+      "Fahrradmitnahme zu jeder Zeit möglich",
+      "Kinderwagen-freundlich mit extra breiten Einstiegen"
+    ],
+    stations_list: [
+      { name: "Vorort Süd", time: "00:00" },
+      { name: "Südpark", time: "00:05" },
+      { name: "Universität Süd", time: "00:10" },
+      { name: "Technologiepark", time: "00:15" },
+      { name: "Zentrum", time: "00:25" },
+      { name: "Rathaus", time: "00:30" },
+      { name: "Hauptstraße", time: "00:35" },
+      { name: "Nordpark", time: "00:40" },
+      { name: "Industriegebiet Nord", time: "00:45" },
+      { name: "Vorort Nord", time: "00:50" }
+    ]
+  },
+  {
+    id: "bus-5",
+    name: "Bus 505",
+    type: "bus",
+    route: "Bahnhof West → Stadion → Einkaufszentrum",
+    stations: 14,
+    duration: "45 Min.",
+    frequency: "alle 10 Min.",
+    capacity: "90 Fahrgäste",
+    status: "Normal",
+    notes: [
+      "Verstärkte Taktung bei Veranstaltungen im Stadion",
+      "Shuttle-Service am Wochenende zum Einkaufszentrum",
+      "Barrierefrei zugänglich"
+    ],
+    stations_list: [
+      { name: "Bahnhof West", time: "00:00" },
+      { name: "Westmarkt", time: "00:05" },
+      { name: "Wohngebiet West", time: "00:10" },
+      { name: "Stadionvorplatz", time: "00:15" },
+      { name: "Stadion Haupteingang", time: "00:18" },
+      { name: "Sportpark", time: "00:23" },
+      { name: "Gewerbegebiet West", time: "00:30" },
+      { name: "Schulzentrum", time: "00:35" },
+      { name: "Einkaufszentrum", time: "00:45" }
+    ]
+  }
 ];
 
 // Fallback route if ID is not found

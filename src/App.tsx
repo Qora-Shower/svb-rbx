@@ -17,6 +17,9 @@ import Schedule from "./pages/Schedule";
 import Tos from "./pages/Tos";
 import Privacy from "./pages/Privacy";
 import Login from "./pages/Login";
+import Dienstplan from "./pages/Dienstplan";
+import Admin from "./pages/Admin";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +42,9 @@ const App = () => (
             <Route path="/tos" element={<Tos />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/dienstplan" element={<Dienstplan />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

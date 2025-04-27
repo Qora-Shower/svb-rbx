@@ -31,13 +31,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (savedUser) {
       setUser(JSON.parse(savedUser));
     }
+    
+    // Retrieve login attempts and last login time from localStorage
+    const savedAttempts = localStorage.getItem("loginAttempts");
+    const savedLastTime = localStorage.getItem("lastLoginTime");
+    
+    if (savedAttempts) {
+      setLoginAttempts(parseInt(savedAttempts));
+    }
+    
+    if (savedLastTime) {
+      setLastLoginTime(parseInt(savedLastTime));
+    }
   }, []);
 
   const getTimeoutMinutes = (attempts: number) => {
     const totalCycles = Math.floor(attempts / 3);
     if (totalCycles === 0) return 0;
     if (attempts % 3 === 0) {
-      return (totalCycles <= 2) ? totalCycles : 3;
+      return (totalCycles <= 3) ? totalCycles : 3;
     }
     return 0;
   };
@@ -65,11 +77,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(loggedInUser);
       localStorage.setItem("currentUser", JSON.stringify(loggedInUser));
       setLoginAttempts(0);
+      localStorage.removeItem("loginAttempts");
+      localStorage.removeItem("lastLoginTime");
       return { success: true };
     } else {
       const newAttempts = loginAttempts + 1;
       setLoginAttempts(newAttempts);
       setLastLoginTime(now);
+      localStorage.setItem("loginAttempts", newAttempts.toString());
+      localStorage.setItem("lastLoginTime", now.toString());
       return { 
         success: false, 
         timeoutMinutes: getTimeoutMinutes(newAttempts) 

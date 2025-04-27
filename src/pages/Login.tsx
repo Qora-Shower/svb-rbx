@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogIn } from "lucide-react";
@@ -13,14 +14,46 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [timeoutEnd, setTimeoutEnd] = useState<Date | null>(null);
+  const [remainingSeconds, setRemainingSeconds] = useState<number>(0);
   const { login, loginAttempts } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  // Check for existing timeout in localStorage
   useEffect(() => {
+    const savedLoginAttempts = localStorage.getItem("loginAttempts");
+    const savedLastLoginTime = localStorage.getItem("lastLoginTime");
+    
+    if (savedLoginAttempts && savedLastLoginTime) {
+      const attempts = parseInt(savedLoginAttempts);
+      const lastTime = parseInt(savedLastLoginTime);
+      const totalCycles = Math.floor(attempts / 3);
+      
+      if (totalCycles > 0 && attempts % 3 === 0) {
+        const timeoutMinutes = (totalCycles <= 3) ? totalCycles : 3;
+        const timeoutMs = timeoutMinutes * 60 * 1000;
+        const endTime = new Date(lastTime + timeoutMs);
+        
+        if (new Date() < endTime) {
+          setTimeoutEnd(endTime);
+        }
+      }
+    }
+  }, []);
+
+  // Timer effect
+  useEffect(() => {
+    if (!timeoutEnd) return;
+    
     const interval = setInterval(() => {
-      if (timeoutEnd && new Date() >= timeoutEnd) {
+      const now = new Date();
+      if (now >= timeoutEnd) {
         setTimeoutEnd(null);
+        setRemainingSeconds(0);
+        clearInterval(interval);
+      } else {
+        const diffSeconds = Math.ceil((timeoutEnd.getTime() - now.getTime()) / 1000);
+        setRemainingSeconds(diffSeconds);
       }
     }, 1000);
 
@@ -97,7 +130,7 @@ const Login = () => {
           {timeoutEnd && (
             <Alert variant="destructive" className="mb-6 animate-fade-in">
               <AlertDescription>
-                Login gesperrt für {Math.ceil((timeoutEnd.getTime() - new Date().getTime()) / 1000)} Sekunden
+                Login gesperrt für {remainingSeconds} Sekunden
               </AlertDescription>
             </Alert>
           )}
