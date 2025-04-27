@@ -6,6 +6,12 @@ interface User {
   username: string;
 }
 
+// User database type
+export interface UserData {
+  username: string;
+  password: string;
+}
+
 // User database
 const userDatabase = [
   { username: "Equinoobie", password: "S0ul" },
@@ -17,6 +23,7 @@ interface AuthContextType {
   login: (username: string, password: string) => { success: boolean; timeoutMinutes?: number };
   logout: () => void;
   loginAttempts: number;
+  userDatabase: UserData[];  // Expose userDatabase for dropdowns
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -99,7 +106,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loginAttempts }}>
+    <AuthContext.Provider value={{ user, login, logout, loginAttempts, userDatabase }}>
       {children}
     </AuthContext.Provider>
   );

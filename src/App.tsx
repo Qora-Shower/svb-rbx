@@ -5,6 +5,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { NewsProvider } from "./contexts/NewsContext";
+import { ShiftProvider } from "./contexts/ShiftContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import News from "./pages/News";
@@ -30,33 +32,37 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/news" element={<News />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/galerie" element={<Galerie />} />
-            <Route path="/shift" element={<Shift />} />
-            <Route path="/timetable" element={<Timetable />} />
-            <Route path="/timetable/:id" element={<RouteDetail />} />
-            <Route path="/timetable/:id/schedule" element={<Schedule />} />
-            <Route path="/tos" element={<Tos />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/dienstplan" element={<Dienstplan />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/admin/mitteilungen" element={<AdminMitteilungen />} />
-            <Route path="/admin/dienstplaene" element={<AdminDienstplaene />} />
-            <Route path="/admin/shifts" element={<AdminShifts />} />
-            <Route path="/admin/news" element={<AdminNews />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <NewsProvider>
+        <ShiftProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/news" element={<News />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/galerie" element={<Galerie />} />
+                <Route path="/shift" element={<Shift />} />
+                <Route path="/timetable" element={<Timetable />} />
+                <Route path="/timetable/:id" element={<RouteDetail />} />
+                <Route path="/timetable/:id/schedule" element={<Schedule />} />
+                <Route path="/tos" element={<Tos />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/dienstplan" element={<Dienstplan />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/admin/mitteilungen" element={<AdminMitteilungen />} />
+                <Route path="/admin/dienstplaene" element={<AdminDienstplaene />} />
+                <Route path="/admin/shifts" element={<AdminShifts />} />
+                <Route path="/admin/news" element={<AdminNews />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </ShiftProvider>
+      </NewsProvider>
     </AuthProvider>
   </QueryClientProvider>
 );

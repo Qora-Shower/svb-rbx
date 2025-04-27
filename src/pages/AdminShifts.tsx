@@ -27,41 +27,31 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+// Import our ShiftContext
+import { useShiftContext } from "@/contexts/ShiftContext";
+
 const AdminShifts = () => {
-  const { user } = useAuth();
+  const { user, userDatabase } = useAuth();
   const navigate = useNavigate();
+  const { shifts, addShift, joinShift } = useShiftContext();
+  
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [description, setDescription] = useState("");
   const [maxParticipants, setMaxParticipants] = useState("10");
   const [selectedShift, setSelectedShift] = useState("");
+  const [assignmentType, setAssignmentType] = useState<"free" | "fixed">("free");
   
   if (!user) {
     return <Navigate to="/login" />;
   }
 
-  // Sample shifts - in a real app these would come from a database
-  const shifts = [
-    { 
-      id: "1", 
-      host: "MaxBusFahrer", 
-      date: "28.04.2025", 
-      time: "14:00 - 16:00" 
-    },
-    { 
-      id: "2", 
-      host: "BusProfi99", 
-      date: "28.04.2025", 
-      time: "16:30 - 18:30" 
-    },
-    { 
-      id: "3", 
-      host: "SpeedDrive", 
-      date: "29.04.2025", 
-      time: "08:00 - 10:00" 
-    }
-  ];
+  // Get all registered usernames from the AuthContext
+  const usernames = userDatabase.map(u => u.username);
+
+  // Filter out shifts that don't belong to real users
+  const realUserShifts = shifts.filter(shift => usernames.includes(shift.host));
 
   const handleHostShift = (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,8 +65,21 @@ const AdminShifts = () => {
       return;
     }
     
-    // In a real app, we would save the shift to a database
-    // For now, we just show a success message and redirect
+    // Create the shift
+    const shiftItem = {
+      id: Date.now().toString(),
+      host: user.username,
+      date: format(date, "dd.MM.yyyy"),
+      time: `${startTime} - ${endTime}`,
+      status: "Aktiv",
+      maxParticipants: parseInt(maxParticipants),
+      description,
+      assignmentType,
+      participants: []
+    };
+    
+    // Add to context
+    addShift(shiftItem);
     
     toast({
       title: "Shift erstellt",
@@ -98,17 +101,25 @@ const AdminShifts = () => {
       return;
     }
     
-    // In a real app, we would register the user for this shift in a database
-    // For now, we just show a success message and redirect
+    // Join the shift
+    const success = joinShift(selectedShift, user.username);
     
-    const shift = shifts.find(s => s.id === selectedShift);
-    
-    toast({
-      title: "Shift angemeldet",
-      description: `Du hast dich erfolgreich für die Shift von ${shift?.host} am ${shift?.date} angemeldet.`,
-    });
-    
-    navigate("/dienstplan");
+    if (success) {
+      const shift = shifts.find(s => s.id === selectedShift);
+      
+      toast({
+        title: "Shift angemeldet",
+        description: `Du hast dich erfolgreich für die Shift von ${shift?.host} am ${shift?.date} angemeldet.`,
+      });
+      
+      navigate("/dienstplan");
+    } else {
+      toast({
+        title: "Fehler",
+        description: "Die Anmeldung für diese Shift ist nicht möglich. Die Shift ist entweder voll oder abgesagt.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -139,7 +150,7 @@ const AdminShifts = () => {
                       <SelectValue placeholder="Shift auswählen" />
                     </SelectTrigger>
                     <SelectContent>
-                      {shifts.map((shift) => (
+                      {realUserShifts.map((shift) => (
                         <SelectItem key={shift.id} value={shift.id}>
                           {shift.host}: {shift.date} ({shift.time})
                         </SelectItem>
@@ -158,6 +169,10 @@ const AdminShifts = () => {
                           <p><span className="font-medium">Host:</span> {shift?.host}</p>
                           <p><span className="font-medium">Datum:</span> {shift?.date}</p>
                           <p><span className="font-medium">Zeit:</span> {shift?.time}</p>
+                          <p><span className="font-medium">Status:</span> {shift?.status}</p>
+                          {shift?.description && (
+                            <p><span className="font-medium">Beschreibung:</span> {shift.description}</p>
+                          )}
                         </div>
                       );
                     })()}
@@ -253,6 +268,22 @@ const AdminShifts = () => {
                   </div>
                   
                   <div className="space-y-2">
+                    <Label htmlFor="assignmentType">Zuweisung</Label>
+                    <Select 
+                      defaultValue="free"
+                      onValueChange={(value: "free" | "fixed") => setAssignmentType(value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="free">Freie Auswahl</SelectItem>
+                        <SelectItem value="fixed">Feste Zuweisung</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2 md:col-span-2">
                     <Label htmlFor="description">Beschreibung</Label>
                     <Textarea 
                       id="description" 
