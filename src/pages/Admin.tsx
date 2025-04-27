@@ -1,7 +1,7 @@
 
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
-import { Settings, Users, Calendar, MessageSquare, ChevronRight, Clock } from "lucide-react";
+import { Settings, Clock, MessageSquare, Edit } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
@@ -33,20 +33,18 @@ const Admin = () => {
             <Card className="hover:shadow-md transition-all">
               <CardHeader className="bg-blue-50">
                 <CardTitle className="flex items-center gap-2">
-                  <Calendar className="h-5 w-5" />
-                  Dienstpläne verwalten
+                  <Clock className="h-5 w-5" />
+                  Shift Management
                 </CardTitle>
-                <CardDescription>Erstellung und Bearbeitung von Dienstplänen</CardDescription>
+                <CardDescription>Erstellung und Verwaltung von Shifts</CardDescription>
               </CardHeader>
               <CardContent className="pt-6 pb-4">
                 <p className="text-gray-600 mb-4">
-                  Erstelle, bearbeite und verwalte Dienstpläne für alle Mitarbeiter.
-                  Weise Schichten zu und behalte den Überblick über die personelle Besetzung.
+                  Erstelle und verwalte Shifts, lege Dienstpläne fest und koordiniere den Betrieb.
                 </p>
-                <Link to="/admin/dienstplaene">
+                <Link to="/admin/shifts">
                   <Button variant="outline" className="w-full flex items-center justify-between">
-                    <span>Dienstpläne öffnen</span>
-                    <ChevronRight className="h-4 w-4" />
+                    <span>Shift erstellen</span>
                   </Button>
                 </Link>
               </CardContent>
@@ -55,72 +53,38 @@ const Admin = () => {
             <Card className="hover:shadow-md transition-all">
               <CardHeader className="bg-purple-50">
                 <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5" />
-                  Benutzerverwaltung
+                  <MessageSquare className="h-5 w-5" />
+                  Mitteilungen
                 </CardTitle>
-                <CardDescription>Übersicht und Verwaltung aller Benutzer</CardDescription>
+                <CardDescription>Mitteilungen und Ankündigungen</CardDescription>
               </CardHeader>
               <CardContent className="pt-6 pb-4">
                 <p className="text-gray-600 mb-4">
-                  Verwalte alle Benutzerkonten, weise Berechtigungen zu und bearbeite Benutzerprofile.
-                  Überwache Aktivitäten und setze Passwörter zurück.
+                  Erstelle wichtige Mitteilungen für Admins oder alle Benutzer.
                 </p>
-                <Link to="/admin/users">
-                  <Button variant="outline" className="w-full flex items-center justify-between">
-                    <span>Benutzer verwalten</span>
-                    <ChevronRight className="h-4 w-4" />
+                <Link to="/admin/mitteilungen">
+                  <Button variant="outline" className="w-full">
+                    Mitteilung erstellen
                   </Button>
                 </Link>
               </CardContent>
             </Card>
-            
+
             <Card className="hover:shadow-md transition-all">
               <CardHeader className="bg-green-50">
                 <CardTitle className="flex items-center gap-2">
-                  <MessageSquare className="h-5 w-5" />
-                  Mitteilungen
+                  <Edit className="h-5 w-5" />
+                  Blog
                 </CardTitle>
-                <CardDescription>Nachrichten und Ankündigungen</CardDescription>
+                <CardDescription>Blog-Einträge verwalten</CardDescription>
               </CardHeader>
               <CardContent className="pt-6 pb-4">
                 <p className="text-gray-600 mb-4">
-                  Erstelle wichtige Mitteilungen und Ankündigungen für Mitarbeiter und Benutzer.
-                  Verwalte alle Benachrichtigungen an einem zentralen Ort.
+                  Erstelle und verwalte Blog-Einträge für alle Benutzer.
                 </p>
-                <div className="space-y-3">
-                  <Link to="/admin/mitteilungen">
-                    <Button variant="outline" className="w-full flex items-center justify-between">
-                      <span>Mitteilung erstellen</span>
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
-                  </Link>
-                  <Link to="/admin/news">
-                    <Button variant="outline" className="w-full flex items-center justify-between">
-                      <span>Admin-Mitteilungen ansehen</span>
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="hover:shadow-md transition-all">
-              <CardHeader className="bg-orange-50">
-                <CardTitle className="flex items-center gap-2">
-                  <Clock className="h-5 w-5" />
-                  Shifts
-                </CardTitle>
-                <CardDescription>Verwaltung von Shifts und Anmeldungen</CardDescription>
-              </CardHeader>
-              <CardContent className="pt-6 pb-4">
-                <p className="text-gray-600 mb-4">
-                  Erstelle und verwalte Shifts, überprüfe Anmeldungen und koordiniere den Betrieb.
-                  Plane regelmäßige Events und sichere die Besetzung.
-                </p>
-                <Link to="/admin/shifts">
-                  <Button variant="outline" className="w-full flex items-center justify-between">
-                    <span>Shifts verwalten</span>
-                    <ChevronRight className="h-4 w-4" />
+                <Link to="/blog/create">
+                  <Button variant="outline" className="w-full">
+                    Blog-Eintrag erstellen
                   </Button>
                 </Link>
               </CardContent>

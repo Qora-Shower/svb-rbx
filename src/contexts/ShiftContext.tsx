@@ -1,16 +1,15 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 export interface ServiceQuota {
-  name: string;
-  total: number;
-  taken: number;
+  name: string;     // e.g., "RE1", "Bus 404"
+  total: number;    // How many positions are available
+  taken: number;    // How many positions are filled
 }
 
 export interface ShiftParticipant {
   username: string;
-  service?: string;
-  role?: string;
+  service?: string;  // The service they're assigned to
+  role?: string;     // e.g., "Admin", "Security", "Dispatcher"
 }
 
 export interface ShiftItem {
@@ -55,7 +54,6 @@ export const ShiftProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return new Date() > shiftDateTime;
   };
 
-  // Clean up expired shifts
   useEffect(() => {
     const cleanupExpiredShifts = () => {
       setShifts(prev => prev.filter(shift => 

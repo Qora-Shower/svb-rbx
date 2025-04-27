@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Menu, Home, Newspaper, GalleryHorizontal, LogIn, Clock, Shield, FileText, Calendar, Settings, Users } from 'lucide-react';
 import { Button } from './ui/button';
@@ -69,21 +68,24 @@ const NavBar = () => {
                 <DropdownMenuTrigger asChild>
                   <Button 
                     variant="outline" 
-                    className="flex items-center gap-2 hover:bg-red-500 hover:text-white border-red-500 text-black"
+                    className="flex items-center gap-2 hover:bg-orange-500 hover:text-white transition-colors border-orange-500 text-black"
                   >
                     <Users className="h-5 w-5" />
                     {user.username}
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="w-48 bg-white border rounded-lg shadow-lg">
                   <Link to="/settings">
-                    <DropdownMenuItem>
-                      <Settings className="h-4 w-4 mr-2" />
+                    <DropdownMenuItem className="flex items-center gap-2 px-4 py-2 hover:bg-orange-50">
+                      <Settings className="h-4 w-4" />
                       <span>Einstellungen</span>
                     </DropdownMenuItem>
                   </Link>
-                  <DropdownMenuItem onClick={logout}>
-                    <LogIn className="h-4 w-4 mr-2 rotate-180" />
+                  <DropdownMenuItem 
+                    onClick={logout}
+                    className="flex items-center gap-2 px-4 py-2 hover:bg-orange-50 text-red-600"
+                  >
+                    <LogIn className="h-4 w-4 rotate-180" />
                     <span>Abmelden</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
