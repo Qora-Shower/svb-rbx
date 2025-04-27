@@ -1,6 +1,5 @@
-
 import { Link } from "react-router-dom";
-import { Shield, FileText, ExternalLink, Discord } from "lucide-react";
+import { Shield, FileText, ExternalLink, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Footer = () => {
@@ -40,7 +39,7 @@ const Footer = () => {
                 className="flex items-center gap-2" 
                 onClick={openDiscord}
               >
-                <Discord className="h-4 w-4" />
+                <Users className="h-4 w-4" />
                 Discord
               </Button>
             </div>

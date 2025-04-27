@@ -1,8 +1,7 @@
-
 import { Link } from "react-router-dom";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
-import { Calendar, Users, ExternalLink, Discord } from "lucide-react";
+import { Calendar, Users, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -71,7 +70,7 @@ const Index = () => {
               variant="outline"
             >
               <div className="flex items-center">
-                <Discord className="h-5 w-5 mr-2" />
+                <Users className="h-5 w-5 mr-2" />
                 <span>Discord beitreten</span>
               </div>
               <ExternalLink className="h-4 w-4" />
