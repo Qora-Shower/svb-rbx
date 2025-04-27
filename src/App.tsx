@@ -19,6 +19,10 @@ import Privacy from "./pages/Privacy";
 import Login from "./pages/Login";
 import Dienstplan from "./pages/Dienstplan";
 import Admin from "./pages/Admin";
+import AdminMitteilungen from "./pages/AdminMitteilungen";
+import AdminDienstplaene from "./pages/AdminDienstplaene";
+import AdminShifts from "./pages/AdminShifts";
+import AdminNews from "./pages/AdminNews";
 import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
@@ -44,6 +48,10 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/dienstplan" element={<Dienstplan />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/mitteilungen" element={<AdminMitteilungen />} />
+            <Route path="/admin/dienstplaene" element={<AdminDienstplaene />} />
+            <Route path="/admin/shifts" element={<AdminShifts />} />
+            <Route path="/admin/news" element={<AdminNews />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

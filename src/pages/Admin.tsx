@@ -1,7 +1,7 @@
 
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
-import { Settings, Users, Calendar, MessageSquare, ChevronRight } from "lucide-react";
+import { Settings, Users, Calendar, MessageSquare, ChevronRight, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
@@ -87,9 +87,39 @@ const Admin = () => {
                   Erstelle wichtige Mitteilungen und Ankündigungen für Mitarbeiter und Benutzer.
                   Verwalte alle Benachrichtigungen an einem zentralen Ort.
                 </p>
-                <Link to="/admin/mitteilungen">
+                <div className="space-y-3">
+                  <Link to="/admin/mitteilungen">
+                    <Button variant="outline" className="w-full flex items-center justify-between">
+                      <span>Mitteilung erstellen</span>
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
+                  <Link to="/admin/news">
+                    <Button variant="outline" className="w-full flex items-center justify-between">
+                      <span>Admin-Mitteilungen ansehen</span>
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-md transition-all">
+              <CardHeader className="bg-orange-50">
+                <CardTitle className="flex items-center gap-2">
+                  <Clock className="h-5 w-5" />
+                  Shifts
+                </CardTitle>
+                <CardDescription>Verwaltung von Shifts und Anmeldungen</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-6 pb-4">
+                <p className="text-gray-600 mb-4">
+                  Erstelle und verwalte Shifts, überprüfe Anmeldungen und koordiniere den Betrieb.
+                  Plane regelmäßige Events und sichere die Besetzung.
+                </p>
+                <Link to="/admin/shifts">
                   <Button variant="outline" className="w-full flex items-center justify-between">
-                    <span>Mitteilungen verwalten</span>
+                    <span>Shifts verwalten</span>
                     <ChevronRight className="h-4 w-4" />
                   </Button>
                 </Link>
